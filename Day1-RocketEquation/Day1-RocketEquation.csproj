@@ -6,4 +6,10 @@
     <RootNamespace>Day1_RocketEquation</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Update="input.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

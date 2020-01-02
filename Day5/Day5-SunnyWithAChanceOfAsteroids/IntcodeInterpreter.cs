@@ -29,10 +29,6 @@ namespace Day5_SunnyWithAChanceOfAsteroids
 
         public void Interpret(int input)
         {
-            lock (_program)
-            {
-
-            }
             int pointerPosition = 0;
 
             while (true)

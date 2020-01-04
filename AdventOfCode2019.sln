@@ -23,6 +23,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Day6-UniversalOrbitMap", "D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Day6Tests", "Day6\Day6Tests\Day6Tests.csproj", "{2EF44CE8-B08B-4140-9587-9761169F27D4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intcode", "Intcode\Intcode.csproj", "{4F4B629C-A490-4C88-AF71-30CEE84709C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intcode.Tests", "IntcodeTests\Intcode.Tests.csproj", "{1A299A53-DCE5-44FC-85D9-EF57B1EAFB63}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +73,14 @@ Global
 		{2EF44CE8-B08B-4140-9587-9761169F27D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2EF44CE8-B08B-4140-9587-9761169F27D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2EF44CE8-B08B-4140-9587-9761169F27D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F4B629C-A490-4C88-AF71-30CEE84709C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F4B629C-A490-4C88-AF71-30CEE84709C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F4B629C-A490-4C88-AF71-30CEE84709C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F4B629C-A490-4C88-AF71-30CEE84709C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A299A53-DCE5-44FC-85D9-EF57B1EAFB63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A299A53-DCE5-44FC-85D9-EF57B1EAFB63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A299A53-DCE5-44FC-85D9-EF57B1EAFB63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A299A53-DCE5-44FC-85D9-EF57B1EAFB63}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

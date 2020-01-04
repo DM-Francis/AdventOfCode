@@ -25,14 +25,7 @@ namespace Intcode.Instructions
             return pointerPosition + 4;
         }
 
-        private int GetParam1(List<int> memory, int pointerPosition)
-        {
-            return Param1Mode.GetValue(memory, pointerPosition + 1);
-        }
-
-        private int GetParam2(List<int> memory, int pointerPosition)
-        {
-            return Param2Mode.GetValue(memory, pointerPosition + 2);
-        }
+        private int GetParam1(List<int> memory, int pointerPosition) => ParameterHelper.GetValue(Param1Mode, memory, pointerPosition + 1);
+        private int GetParam2(List<int> memory, int pointerPosition) => ParameterHelper.GetValue(Param2Mode, memory, pointerPosition + 2);
     }
 }

@@ -10,25 +10,21 @@ namespace Intcode
     {
         private readonly List<int> _memory;
         private readonly Action<int> _outputDelegate;
+        private Func<int> _inputProvider;
 
         public IReadOnlyList<int> Memory { get => _memory.AsReadOnly(); }
 
-        public IntcodeInterpreter(IEnumerable<int> program) : this(program, i => { })
-        {
-        }
+        public IntcodeInterpreter(IEnumerable<int> program) : this(program, i => { }, () => 0) { }
+        public IntcodeInterpreter(IEnumerable<int> program, Action<int> outputDelegate) : this(program, outputDelegate, () => 0) { }
 
-        public IntcodeInterpreter(IEnumerable<int> program, Action<int> outputDelegate)
+        public IntcodeInterpreter(IEnumerable<int> program, Action<int> outputDelegate, Func<int> inputProvider)
         {
             _memory = new List<int>(program);
             _outputDelegate = outputDelegate;
+            _inputProvider = inputProvider;
         }
 
         public void Interpret()
-        {
-            Interpret(0);
-        }
-
-        public void Interpret(int input)
         {
             int pointerPosition = 0;
 
@@ -41,12 +37,18 @@ namespace Intcode
                     break;
                 }
 
-                pointerPosition = instruction.Execute(_memory, pointerPosition, input, _outputDelegate);
+                pointerPosition = instruction.Execute(_memory, pointerPosition, _inputProvider, _outputDelegate);
                 if (pointerPosition >= _memory.Count)
                 {
                     break;
                 }
             }
+        }
+
+        public void Interpret(int input)
+        {
+            _inputProvider = () => input;
+            Interpret();
         }
     }
 }

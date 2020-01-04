@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Intcode
 {
-    public static class ParameterModeExtensions
+    public static class ParameterHelper
     {
-        public static int GetValue(this ParameterMode mode, List<int> memory, int address)
+        public static int GetValue(ParameterMode mode, List<int> memory, int address)
         {
             return mode switch
             {

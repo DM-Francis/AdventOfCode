@@ -18,6 +18,9 @@ namespace Intcode.Instructions
         }
 
         public int Execute(List<int> memory, int pointerPosition, int input, Action<int> outputDelegate)
+            => Execute(memory, pointerPosition, () => input, outputDelegate);
+
+        public int Execute(List<int> memory, int pointerPosition, Func<int> inputProvider, Action<int> outputDelegate)
         {
             int resultPosition = memory[pointerPosition + 3];
             memory[resultPosition] = GetParam1(memory, pointerPosition) + GetParam2(memory, pointerPosition);

@@ -15,8 +15,11 @@ namespace Intcode.Instructions
         }
 
         public int Execute(List<int> memory, int pointerPosition, int input, Action<int> outputDelegate)
+            => Execute(memory, pointerPosition, () => input, outputDelegate);
+
+        public int Execute(List<int> memory, int pointerPosition, Func<int> inputProvider, Action<int> outputDelegate)
         {
-            int outputValue = Param1Mode.GetValue(memory, pointerPosition + 1);
+            int outputValue = ParameterHelper.GetValue(Param1Mode, memory, pointerPosition + 1);
             outputDelegate.Invoke(outputValue);
 
             return pointerPosition + 2;

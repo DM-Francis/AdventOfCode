@@ -10,5 +10,8 @@ namespace Intcode.Instructions
 
         public int Execute(List<int> memory, int pointerPosition, int input, Action<int> outputDelegate)
             => throw new NotSupportedException();
+
+        public int Execute(List<int> memory, int pointerPosition, Func<int> inputProvider, Action<int> outputDelegate)
+            => throw new NotSupportedException();
     }
 }

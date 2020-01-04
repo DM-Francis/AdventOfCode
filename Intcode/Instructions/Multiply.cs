@@ -18,6 +18,9 @@ namespace Intcode.Instructions
         }
 
         public int Execute(List<int> memory, int pointerPosition, int input, Action<int> outputDelegate)
+            => Execute(memory, pointerPosition, () => input, outputDelegate);
+
+        public int Execute(List<int> memory, int pointerPosition, Func<int> inputProvider, Action<int> outputDelegate)
         {
             int resultPosition = memory[pointerPosition + 3];
             memory[resultPosition] = GetParam1(memory, pointerPosition) * GetParam2(memory, pointerPosition);
@@ -25,14 +28,7 @@ namespace Intcode.Instructions
             return pointerPosition + 4;
         }
 
-        private int GetParam1(List<int> memory, int pointerPosition)
-        {
-            return Param1Mode.GetValue(memory, pointerPosition + 1);
-        }
-
-        private int GetParam2(List<int> memory, int pointerPosition)
-        {
-            return Param2Mode.GetValue(memory, pointerPosition + 2);
-        }
+        private int GetParam1(List<int> memory, int pointerPosition) => ParameterHelper.GetValue(Param1Mode, memory, pointerPosition + 1);
+        private int GetParam2(List<int> memory, int pointerPosition) => ParameterHelper.GetValue(Param2Mode, memory, pointerPosition + 2);
     }
 }

@@ -43,8 +43,7 @@ namespace Day6_UniversalOrbitMap
 
         private void SetParent(string name, string parentName)
         {
-            var parent = _spaceObjects[parentName];
-            _spaceObjects[name].Parent = parent;
+            _spaceObjects[name].Parent = _spaceObjects[parentName];
         }
 
         public int CountOrbits()

@@ -14,10 +14,10 @@ namespace Intcode
 
         public IReadOnlyList<int> Memory { get => _memory.AsReadOnly(); }
 
-        public IntcodeInterpreter(IEnumerable<int> program) : this(program, i => { }, () => 0) { }
-        public IntcodeInterpreter(IEnumerable<int> program, Action<int> outputDelegate) : this(program, outputDelegate, () => 0) { }
+        public IntcodeInterpreter(IEnumerable<int> program) : this(program, () => 0, i => { }) { }
+        public IntcodeInterpreter(IEnumerable<int> program, Action<int> outputDelegate) : this(program, () => 0, outputDelegate) { }
 
-        public IntcodeInterpreter(IEnumerable<int> program, Action<int> outputDelegate, Func<int> inputProvider)
+        public IntcodeInterpreter(IEnumerable<int> program, Func<int> inputProvider, Action<int> outputDelegate)
         {
             _memory = new List<int>(program);
             _outputDelegate = outputDelegate;

@@ -27,6 +27,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intcode", "Intcode\Intcode.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intcode.Tests", "IntcodeTests\Intcode.Tests.csproj", "{1A299A53-DCE5-44FC-85D9-EF57B1EAFB63}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Day7-AmplificationCircuit", "Day7\Day7-AmplificationCircuit\Day7-AmplificationCircuit.csproj", "{27C3BC4F-61E1-45F5-A591-DCF2099D0984}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Day7Tests", "Day7\Day7Tests\Day7Tests.csproj", "{D8EDC2E1-2769-4F39-A406-535CD2FE67D5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +85,14 @@ Global
 		{1A299A53-DCE5-44FC-85D9-EF57B1EAFB63}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1A299A53-DCE5-44FC-85D9-EF57B1EAFB63}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1A299A53-DCE5-44FC-85D9-EF57B1EAFB63}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27C3BC4F-61E1-45F5-A591-DCF2099D0984}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27C3BC4F-61E1-45F5-A591-DCF2099D0984}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27C3BC4F-61E1-45F5-A591-DCF2099D0984}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27C3BC4F-61E1-45F5-A591-DCF2099D0984}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8EDC2E1-2769-4F39-A406-535CD2FE67D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8EDC2E1-2769-4F39-A406-535CD2FE67D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8EDC2E1-2769-4F39-A406-535CD2FE67D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8EDC2E1-2769-4F39-A406-535CD2FE67D5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

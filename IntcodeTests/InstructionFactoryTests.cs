@@ -1,8 +1,4 @@
-﻿using Intcode;
-using Intcode.Instructions;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Intcode.Instructions;
 using Xunit;
 
 namespace Intcode.Tests

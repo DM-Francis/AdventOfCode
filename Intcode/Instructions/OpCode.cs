@@ -14,6 +14,7 @@ namespace Intcode.Instructions
         JumpIfFalse = 6,
         LessThan = 7,
         Equals = 8,
+        RelativeBaseOffet = 9,
         Halt = 99
     }
 }

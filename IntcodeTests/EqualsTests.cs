@@ -1,5 +1,6 @@
 ﻿using Intcode.Instructions;
 using System.Collections.Generic;
+using System.Numerics;
 using Xunit;
 
 namespace Intcode.Tests
@@ -10,14 +11,14 @@ namespace Intcode.Tests
         public void EqualsTest1()
         {
             // Assemble
-            var memory = new List<int> { 0, 2, 2, 0 };
-            var equals = new Equals(ParameterMode.Immediate, ParameterMode.Immediate);
+            var memory = new List<BigInteger> { 0, 2, 2, 0 };
+            var equals = new Equals(memory.CreateState(), ParameterMode.Immediate, ParameterMode.Immediate);
 
             // Act
-            equals.Execute(memory, 0, 0, null);
+            equals.Execute();
 
             // Assert
-            var expected = new List<int> { 1, 2, 2, 0 };
+            var expected = new List<BigInteger> { 1, 2, 2, 0 };
             Assert.Equal(expected, memory);
         }
 
@@ -25,14 +26,14 @@ namespace Intcode.Tests
         public void EqualsTest2()
         {
             // Assemble
-            var memory = new List<int> { 0, 4, 2, 0, 2 };       // Comparing the last digit (2) to the second (2)
-            var equals = new Equals(ParameterMode.Position, ParameterMode.Immediate);
+            var memory = new List<BigInteger> { 0, 4, 2, 0, 2 };       // Comparing the last digit (2) to the second (2)
+            var equals = new Equals(memory.CreateState(), ParameterMode.Position, ParameterMode.Immediate);
 
             // Act
-            equals.Execute(memory, 0, 0, null);
+            equals.Execute();
 
             // Assert
-            var expected = new List<int> { 1, 4, 2, 0, 2 };
+            var expected = new List<BigInteger> { 1, 4, 2, 0, 2 };
             Assert.Equal(expected, memory);
         }
     }

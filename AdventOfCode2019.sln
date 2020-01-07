@@ -33,6 +33,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Day7Tests", "Day7\Day7Tests
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Day8-SpaceImageFormat", "Day8\Day8-SpaceImageFormat\Day8-SpaceImageFormat.csproj", "{0C5FF8F9-6B50-4F6F-BEEA-0A3B10E2CEBC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Day9-SensorBoost", "Day9\Day9-SensorBoost\Day9-SensorBoost.csproj", "{7E9DB38C-069A-4A2F-AD40-217CBAC63395}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -99,6 +101,10 @@ Global
 		{0C5FF8F9-6B50-4F6F-BEEA-0A3B10E2CEBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0C5FF8F9-6B50-4F6F-BEEA-0A3B10E2CEBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0C5FF8F9-6B50-4F6F-BEEA-0A3B10E2CEBC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E9DB38C-069A-4A2F-AD40-217CBAC63395}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E9DB38C-069A-4A2F-AD40-217CBAC63395}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E9DB38C-069A-4A2F-AD40-217CBAC63395}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E9DB38C-069A-4A2F-AD40-217CBAC63395}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

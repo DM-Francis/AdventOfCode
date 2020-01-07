@@ -1,5 +1,6 @@
 ﻿using Intcode.Instructions;
 using System.Collections.Generic;
+using System.Numerics;
 using Xunit;
 
 namespace Intcode.Tests
@@ -10,32 +11,32 @@ namespace Intcode.Tests
         public void OutputPositionTest()
         {
             // Assemble
-            var memory = new List<int> { 4, 2, 20 };
-            var outputList = new List<int>();
-            var output = new Output(ParameterMode.Position);
+            var memory = new List<BigInteger> { 4, 2, 20 };
+            var state = memory.CreateState();
+            var output = new Output(state, ParameterMode.Position);
 
             // Act
-            output.Execute(memory, 0, 0, v => outputList.Add(v));
+            output.Execute();
 
             // Assert
-            var expected = new List<int> { 20 };
-            Assert.Equal(expected, outputList);
+            var expected = 20;
+            Assert.Equal(expected, state.OutputValue);
         }
 
         [Fact]
         public void OutputImmediateTest()
         {
             // Assemble
-            var memory = new List<int> { 4, 15, 20 };
-            var outputList = new List<int>();
-            var output = new Output(ParameterMode.Immediate);
+            var memory = new List<BigInteger> { 4, 15, 20 };
+            var state = memory.CreateState();
+            var output = new Output(state, ParameterMode.Immediate);
 
             // Act
-            output.Execute(memory, 0, 0, v => outputList.Add(v));
+            output.Execute();
 
             // Assert
-            var expected = new List<int> { 15 };
-            Assert.Equal(expected, outputList);
+            var expected = 15;
+            Assert.Equal(expected, state.OutputValue);
         }
     }
 }

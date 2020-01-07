@@ -1,18 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Numerics;
 using System.Text;
 
 namespace Intcode.Instructions
 {
-    public class Output : IInstruction
+    public class RelativeBaseOffset : IInstruction
     {
         private readonly IIntcodeState _state;
 
+        public OpCode OpCode => OpCode.RelativeBaseOffet;
         public ParameterMode Param1Mode { get; }
-        public OpCode OpCode => OpCode.Output;
 
-        public Output(IIntcodeState state, ParameterMode param1Mode)
+        public RelativeBaseOffset(IIntcodeState state, ParameterMode param1Mode)
         {
             _state = state;
             Param1Mode = param1Mode;
@@ -20,8 +19,7 @@ namespace Intcode.Instructions
 
         public int Execute()
         {
-            BigInteger outputValue = ParameterHelper.GetValue(Param1Mode, _state, _state.PointerPosition + 1);
-            _state.Output(outputValue);
+            _state.RelativeBase += (int)ParameterHelper.GetValue(Param1Mode, _state, _state.PointerPosition + 1);
 
             return _state.PointerPosition + 2;
         }

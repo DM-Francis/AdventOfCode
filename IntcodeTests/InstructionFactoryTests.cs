@@ -5,15 +5,22 @@ namespace Intcode.Tests
 {
     public class InstructionFactoryTests
     {
+        private InstructionFactory CreateIntructionFactory()
+        {
+            return new InstructionFactory(new StubIntcodeState());
+        }
+
         [Fact]
         public void CreatesCorrectInstructionObjects_Test1()
         {
             // Assemble & Act
-            var add = InstructionFactory.Get(1);
-            var multiply = InstructionFactory.Get(2);
-            var input = InstructionFactory.Get(3);
-            var output = InstructionFactory.Get(4);
-            var halt = InstructionFactory.Get(99);
+            var factory = CreateIntructionFactory();
+
+            var add = factory.Get(1);
+            var multiply = factory.Get(2);
+            var input = factory.Get(3);
+            var output = factory.Get(4);
+            var halt = factory.Get(99);
 
             // Assert
             Assert.IsType<Add>(add);
@@ -27,10 +34,12 @@ namespace Intcode.Tests
         public void CreatesCorrectInstructionObjects_Test2()
         {
             // Assemble & Act
-            var jumpIfTrue = InstructionFactory.Get(5);
-            var jumpIfFalse = InstructionFactory.Get(6);
-            var lessThan = InstructionFactory.Get(7);
-            var equals = InstructionFactory.Get(8);
+            var factory = CreateIntructionFactory();
+
+            var jumpIfTrue = factory.Get(5);
+            var jumpIfFalse = factory.Get(6);
+            var lessThan = factory.Get(7);
+            var equals = factory.Get(8);
 
             // Assert
             Assert.IsType<JumpIfTrue>(jumpIfTrue);
@@ -43,7 +52,8 @@ namespace Intcode.Tests
         public void SetsCorrectParameterModes1()
         {
             // Assemble & Act
-            var add = InstructionFactory.Get(1) as Add;
+            var factory = CreateIntructionFactory();
+            var add = factory.Get(1) as Add;
 
             // Assert
             Assert.Equal(ParameterMode.Position, add.Param1Mode);
@@ -54,7 +64,8 @@ namespace Intcode.Tests
         public void SetsCorrectParameterModes2()
         {
             // Assemble & Act
-            var add = InstructionFactory.Get(1001) as Add;
+            var factory = CreateIntructionFactory();
+            var add = factory.Get(1001) as Add;
 
             // Assert
             Assert.Equal(ParameterMode.Position, add.Param1Mode);
@@ -65,7 +76,8 @@ namespace Intcode.Tests
         public void SetsCorrectParameterModes3()
         {
             // Assemble & Act
-            var output = InstructionFactory.Get(104) as Output;
+            var factory = CreateIntructionFactory();
+            var output = factory.Get(104) as Output;
 
             // Assert
             Assert.Equal(ParameterMode.Immediate, output.Param1Mode);
@@ -75,11 +87,12 @@ namespace Intcode.Tests
         public void CreatesCorrectInstructionObjects_Test3()
         {
             // Assemble & Act
-            var add = InstructionFactory.Get(1001);
-            var multiply = InstructionFactory.Get(1102);
-            var input = InstructionFactory.Get(103);
-            var output = InstructionFactory.Get(04);
-            var halt = InstructionFactory.Get(99);
+            var factory = CreateIntructionFactory();
+            var add = factory.Get(1001);
+            var multiply = factory.Get(1102);
+            var input = factory.Get(103);
+            var output = factory.Get(04);
+            var halt = factory.Get(99);
 
             // Assert
             Assert.IsType<Add>(add);

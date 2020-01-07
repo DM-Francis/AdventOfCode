@@ -1,38 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Text;
 
 namespace Intcode.Instructions
 {
     public class JumpIfFalse : IInstruction
     {
+        private readonly IIntcodeState _state;
+
         public ParameterMode Param1Mode { get; }
         public ParameterMode Param2Mode { get; }
 
         public OpCode OpCode => OpCode.JumpIfFalse;
 
-        public JumpIfFalse(ParameterMode param1Mode, ParameterMode param2Mode)
+        public JumpIfFalse(IIntcodeState state, ParameterMode param1Mode, ParameterMode param2Mode)
         {
+            _state = state;
             Param1Mode = param1Mode;
             Param2Mode = param2Mode;
         }
 
-        public int Execute(List<int> memory, int pointerPosition, int input, Action<int> outputDelegate)
-            => Execute(memory, pointerPosition, () => input, outputDelegate);
-
-        public int Execute(List<int> memory, int pointerPosition, Func<int> inputProvider, Action<int> outputDelegate)
+        public int Execute()
         {
-            if (GetParam1(memory, pointerPosition) == 0)
+            if (GetParam1() == 0)
             {
-                return GetParam2(memory, pointerPosition);
+                return (int)GetParam2();
             }
             else
             {
-                return pointerPosition + 3;
+                return _state.PointerPosition + 3;
             }
         }
 
-        private int GetParam1(List<int> memory, int pointerPosition) => ParameterHelper.GetValue(Param1Mode, memory, pointerPosition + 1);
-        private int GetParam2(List<int> memory, int pointerPosition) => ParameterHelper.GetValue(Param2Mode, memory, pointerPosition + 2);
+        private BigInteger GetParam1() => ParameterHelper.GetValue(Param1Mode, _state, _state.PointerPosition + 1);
+        private BigInteger GetParam2() => ParameterHelper.GetValue(Param2Mode, _state, _state.PointerPosition + 2);
     }
 }

@@ -1,41 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Text;
 
 namespace Intcode.Instructions
 {
     public class LessThan : IInstruction
     {
+        private readonly IIntcodeState _state;
+
         public ParameterMode Param1Mode { get; }
         public ParameterMode Param2Mode { get; }
+        public ParameterMode Param3Mode { get; }
 
         public OpCode OpCode => OpCode.LessThan;
 
-        public LessThan(ParameterMode param1Mode, ParameterMode param2Mode)
+        public LessThan(IIntcodeState state, ParameterMode param1Mode, ParameterMode param2Mode, ParameterMode param3Mode = ParameterMode.Position)
         {
+            _state = state;
             Param1Mode = param1Mode;
             Param2Mode = param2Mode;
+            Param3Mode = param3Mode;
         }
 
-        public int Execute(List<int> memory, int pointerPosition, int input, Action<int> outputDelegate)
-            => Execute(memory, pointerPosition, () => input, outputDelegate);
-
-        public int Execute(List<int> memory, int pointerPosition, Func<int> inputProvider, Action<int> outputDelegate)
+        public int Execute()
         {
-            int resultPosition = memory[pointerPosition + 3];
-            if (GetParam1(memory, pointerPosition) < GetParam2(memory, pointerPosition))
+            int resultPosition = (int)GetParam3();
+            if (GetParam1() < GetParam2())
             {
-                memory[resultPosition] = 1;
+                _state[resultPosition] = 1;
             }
             else
             {
-                memory[resultPosition] = 0;
+                _state[resultPosition] = 0;
             }
 
-            return pointerPosition + 4;
+            return _state.PointerPosition + 4;
         }
 
-        private int GetParam1(List<int> memory, int pointerPosition) => ParameterHelper.GetValue(Param1Mode, memory, pointerPosition + 1);
-        private int GetParam2(List<int> memory, int pointerPosition) => ParameterHelper.GetValue(Param2Mode, memory, pointerPosition + 2);
+        private BigInteger GetParam1() => ParameterHelper.GetValue(Param1Mode, _state, _state.PointerPosition + 1);
+        private BigInteger GetParam2() => ParameterHelper.GetValue(Param2Mode, _state, _state.PointerPosition + 2);
+        private BigInteger GetParam3() => ParameterHelper.GetAddress(Param3Mode, _state, _state.PointerPosition + 3);
     }
 }

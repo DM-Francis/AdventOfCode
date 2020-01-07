@@ -8,10 +8,7 @@ namespace Intcode.Instructions
     {
         public OpCode OpCode => OpCode.Halt;
 
-        public int Execute(List<int> memory, int pointerPosition, int input, Action<int> outputDelegate)
-            => throw new NotSupportedException();
-
-        public int Execute(List<int> memory, int pointerPosition, Func<int> inputProvider, Action<int> outputDelegate)
+        public int Execute()
             => throw new NotSupportedException();
     }
 }

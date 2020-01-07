@@ -57,7 +57,7 @@ namespace Day7_AmplificationCircuit
 
         private static int GetOutputForPhaseSettings(IEnumerable<int> program, IEnumerable<int> phaseSettings, bool withFeedbackLoop = false)
         {
-            var circuit = new AmplificationCircuit(program, phaseSettings, withFeedbackLoop);
+            using var circuit = new AmplificationCircuit(program, phaseSettings, withFeedbackLoop);
             return circuit.GetOutputSignal();
         }
     }

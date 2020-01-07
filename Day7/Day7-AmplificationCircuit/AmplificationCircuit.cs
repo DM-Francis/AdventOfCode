@@ -1,11 +1,12 @@
 ﻿using Day7_AmplificationCircuit.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Day7_AmplificationCircuit
 {
-    public class AmplificationCircuit
+    public class AmplificationCircuit : IDisposable
     {
         private readonly bool _hasFeedbackLoop;
 
@@ -74,6 +75,14 @@ namespace Day7_AmplificationCircuit
             var lastSignal = _hasFeedbackLoop ? _signals[0] : _signals[_signals.Count - 1];
 
             return lastSignal.Get();
+        }
+
+        public void Dispose()
+        {
+            foreach(var signal in _signals)
+            {
+                signal.Dispose();
+            }
         }
     }
 }

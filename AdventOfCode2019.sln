@@ -37,7 +37,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Day9-SensorBoost", "Day9\Da
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Day10-MonitoringStation", "Day10\Day10-MonitoringStation\Day10-MonitoringStation.csproj", "{E08C85D4-47A5-460C-8630-0B7942E2A509}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Day10Tests", "Day10\Day10Tests\Day10Tests.csproj", "{F39AEE4C-8CC2-428D-864C-7F481B5DAFE4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Day10Tests", "Day10\Day10Tests\Day10Tests.csproj", "{F39AEE4C-8CC2-428D-864C-7F481B5DAFE4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Day11-SpacePolice", "Day11\Day11-SpacePolice\Day11-SpacePolice.csproj", "{2E61DA06-CB56-4330-A1C2-054CE244509E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -117,6 +119,10 @@ Global
 		{F39AEE4C-8CC2-428D-864C-7F481B5DAFE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F39AEE4C-8CC2-428D-864C-7F481B5DAFE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F39AEE4C-8CC2-428D-864C-7F481B5DAFE4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E61DA06-CB56-4330-A1C2-054CE244509E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E61DA06-CB56-4330-A1C2-054CE244509E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E61DA06-CB56-4330-A1C2-054CE244509E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E61DA06-CB56-4330-A1C2-054CE244509E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

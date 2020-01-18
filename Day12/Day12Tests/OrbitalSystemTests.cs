@@ -25,16 +25,18 @@ namespace Day12Tests
             system.AdvanceTimeStep();
 
             // Assert positions
-            Assert.Equal(new Vector3(2, -1, 1), moons[0].Position);
-            Assert.Equal(new Vector3(3, -7, -4), moons[1].Position);
-            Assert.Equal(new Vector3(1, -7, 5), moons[2].Position);
-            Assert.Equal(new Vector3(2, 2, 0), moons[3].Position);
+            var moonState = system.Moons;
+
+            Assert.Equal(new Vector3(2, -1, 1), moonState[0].Position);
+            Assert.Equal(new Vector3(3, -7, -4), moonState[1].Position);
+            Assert.Equal(new Vector3(1, -7, 5), moonState[2].Position);
+            Assert.Equal(new Vector3(2, 2, 0), moonState[3].Position);
 
             // Assert velocities
-            Assert.Equal(new Vector3(3, -1, -1), moons[0].Velocity);
-            Assert.Equal(new Vector3(1, 3, 3), moons[1].Velocity);
-            Assert.Equal(new Vector3(-3, 1, -3), moons[2].Velocity);
-            Assert.Equal(new Vector3(-1, -3, 1), moons[3].Velocity);
+            Assert.Equal(new Vector3(3, -1, -1), moonState[0].Velocity);
+            Assert.Equal(new Vector3(1, 3, 3), moonState[1].Velocity);
+            Assert.Equal(new Vector3(-3, 1, -3), moonState[2].Velocity);
+            Assert.Equal(new Vector3(-1, -3, 1), moonState[3].Velocity);
         }
 
         [Fact]
@@ -51,19 +53,20 @@ namespace Day12Tests
             var system = new OrbitalSystem(moons);
 
             // Act
-            system.AdvanceManyTimeSteps(10);
+            system.AdvanceTimeSteps(10);
 
             // Assert positions
-            Assert.Equal(new Vector3(2, 1, -3), moons[0].Position);
-            Assert.Equal(new Vector3(1, -8, 0), moons[1].Position);
-            Assert.Equal(new Vector3(3, -6, 1), moons[2].Position);
-            Assert.Equal(new Vector3(2, 0, 4), moons[3].Position);
+            var moonState = system.Moons;
+            Assert.Equal(new Vector3(2, 1, -3), moonState[0].Position);
+            Assert.Equal(new Vector3(1, -8, 0), moonState[1].Position);
+            Assert.Equal(new Vector3(3, -6, 1), moonState[2].Position);
+            Assert.Equal(new Vector3(2, 0, 4), moonState[3].Position);
 
             // Assert velocities
-            Assert.Equal(new Vector3(-3, -2, 1), moons[0].Velocity);
-            Assert.Equal(new Vector3(-1, 1, 3), moons[1].Velocity);
-            Assert.Equal(new Vector3(3, 2, -3), moons[2].Velocity);
-            Assert.Equal(new Vector3(1, -1, -1), moons[3].Velocity);
+            Assert.Equal(new Vector3(-3, -2, 1), moonState[0].Velocity);
+            Assert.Equal(new Vector3(-1, 1, 3), moonState[1].Velocity);
+            Assert.Equal(new Vector3(3, 2, -3), moonState[2].Velocity);
+            Assert.Equal(new Vector3(1, -1, -1), moonState[3].Velocity);
         }
     }
 }

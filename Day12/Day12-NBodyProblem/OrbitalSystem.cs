@@ -9,17 +9,22 @@ namespace Day12_NBodyProblem
 {
     public class OrbitalSystem
     {
-        private readonly List<Moon> _moons;
-        private int _timesteps = 0;
+        public Dictionary<MoonState, long> History = new Dictionary<MoonState, long>();
+        public MoonState Moons { get; }
+
+        private long _timesteps = 0;
+        private readonly List<(Moon A, Moon B)> _moonPairs;
 
         public OrbitalSystem(List<Moon> moons)
         {
-            _moons = moons;
+            Moons = new MoonState(moons);
+            var combs = new Combinations<Moon>(Moons.ToList(), 2);
+            _moonPairs = combs.Select(l => (l[0], l[1])).ToList();
         }
 
-        public void AdvanceManyTimeSteps(int timesteps)
+        public void AdvanceTimeSteps(long timesteps)
         {
-            for (int i = 1; i <= timesteps; i++)
+            for (long i = 1; i <= timesteps; i++)
             {
                 AdvanceTimeStep();
             }
@@ -32,19 +37,33 @@ namespace Day12_NBodyProblem
             _timesteps++;
         }
 
-        public float GetTotalEnergy() => _moons.Select(m => m.TotalEnergy).Sum();
-
-        private void ApplyGravity()
+        public void AdvanceUntilRepetition()
         {
-            var moonPairs = new Combinations<Moon>(_moons, 2);
-
-            foreach(var moonPair in moonPairs)
+            RecordCurrentState();
+            AdvanceTimeSteps(1_000_000);
+            
+            if (History.TryGetValue(Moons, out long matchingTimeStep))
             {
-                ApplyGravity(moonPair[0], moonPair[1]);
+
             }
         }
 
-        private void ApplyGravity(Moon moonA, Moon moonB)
+        public float GetTotalEnergy() => Moons.Select(m => m.TotalEnergy).Sum();
+
+        private void RecordCurrentState()
+        {
+            History[Moons.GetCopy()] = _timesteps;
+        }
+
+        private void ApplyGravity()
+        {
+            for (int i = 0; i < _moonPairs.Count; i++)
+            {
+                ApplyGravityToPair(_moonPairs[i].A, _moonPairs[i].B);
+            }
+        }
+
+        private void ApplyGravityToPair(Moon moonA, Moon moonB)
         {
             var diff = moonB.Position - moonA.Position;
             var unitChange = diff / Vector3.Abs(diff);
@@ -59,11 +78,10 @@ namespace Day12_NBodyProblem
 
         private void ApplyVelocity()
         {
-            foreach(var moon in _moons)
+            for (int i = 0; i < Moons.Count; i++)
             {
-                moon.Position += moon.Velocity;
+                Moons[i].Position += Moons[i].Velocity;
             }
         }
-
     }
 }

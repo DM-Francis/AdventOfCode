@@ -18,7 +18,7 @@ namespace Day12_NBodyProblem
 
             var system = new OrbitalSystem(moons);
 
-            system.AdvanceManyTimeSteps(4000000);
+            system.AdvanceTimeSteps(46_000_000);
 
             Console.WriteLine(system.GetTotalEnergy());
         }

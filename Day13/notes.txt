@@ -29,3 +29,7 @@ We need to ensure we iterate through them in ascending order, so assume without 
 
 Then iterate k_0 from 0 to x_1, and then increment x_1 and reset x_0.
 Continue until x_1 reaches x_2, then start incrementing x_2 and reset x_1, and so on.
+
+----------------------------------------------------
+
+NOTE: I didn't need to use any of this in the solution!

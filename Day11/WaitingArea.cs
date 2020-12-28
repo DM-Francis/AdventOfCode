@@ -161,8 +161,8 @@ namespace Day11
 
         private SeatState? GetVisibleSeatInDirection(int baseRow, int baseCol, int northAmount, int eastAmount)
         {
-            int rowMovement = eastAmount;
-            int colMovement = -northAmount;
+            int rowMovement = -northAmount;
+            int colMovement = eastAmount;
 
             int checkingRow = baseRow + rowMovement;
             int checkingCol = baseCol + colMovement;
@@ -181,6 +181,6 @@ namespace Day11
         }
 
         private bool IndexesAreValid(int row, int col)
-            => row > 0 && col > 0 && row < _rowCount - 1 && col < _colCount - 1;
+            => row >= 0 && col >= 0 && row < _rowCount && col < _colCount;
     }
 }

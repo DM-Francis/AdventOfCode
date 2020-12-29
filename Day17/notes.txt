@@ -1,0 +1,20 @@
+How to calculate no. of neighbours for all positions simultaineously?
+
+Let's try with a 1d array:
+[0,0,1,1,0,1,1,1,0,1]
+
+First create 2 more arrays, one shifted right, one shifted left (adding zeros when overflowing):
+
+L:  [0,1,1,0,1,1,1,0,1,0]
+R:  [0,0,0,1,1,0,1,1,1,0]
+
+Then sum the L and R arrays:
+
+[0,1,1,1,2,1,2,1,2,0]
+
+The expected neighour count is:
+[0,1,1,1,2,1,2,1,2,0]
+
+So this method works!
+
+To expand it to 2 dimensions, rather than having L and R arrays, we instead need 8 arrays, one for each direction.

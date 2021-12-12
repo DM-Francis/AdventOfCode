@@ -19,6 +19,7 @@ Console.WriteLine($"Mean: {mean}");
 Console.WriteLine($"Rounded mean: {meanRounded}");
 Console.WriteLine($"Fuel at mean: {fuelAtMean}");
 
+// The answer was to actually use the mean rounded down rather than up.
 
 static double CalcFuelExpensive(double number, double target)
 {

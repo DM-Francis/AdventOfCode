@@ -7,7 +7,7 @@ def expand_in_all_directions(array):
 
 def count_active_neighbors(array):
     # Plan is to create 80 arrays, where each is a copy of the original,
-    # but shifted in 1 direction of the 26 directions, and without wrapping around.
+    # but shifted in 1 direction of the 80 directions, and without wrapping around.
     # We can use numpy.roll, roll does wrap around, so we need to ensure the edges are all reset to 0 after rolling.
     # Although, if we assume that 'array' always has zeros on the edges, we don't need to worry about about wrapping
 
@@ -48,7 +48,7 @@ if __name__ == "__main__":
         for j in range(len(input_lines[0]) - 1):
             input_array[0,0,i,j] = input_lines[i][j]
 
-    initial_state = input_array == '#'    
+    initial_state = input_array == '#'
     state = initial_state
     for i in range(6):
         state = run_cycle(state)

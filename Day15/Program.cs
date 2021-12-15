@@ -113,9 +113,7 @@ static int[,] GetFullGridFromStarterGrid(int[,] grid)
             {
                 for (int col = 0; col < colLength; col++)
                 {
-                    int newVal = (grid[row, col] + tileRow + tileCol) % 9;
-                    if (newVal == 0)
-                        newVal = 9;
+                    int newVal = (grid[row, col] + tileRow + tileCol - 1) % 9 + 1;
 
                     fullGrid[tileRow * rowLength + row, tileCol * colLength + col] = newVal;
                 }

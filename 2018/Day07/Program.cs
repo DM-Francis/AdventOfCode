@@ -51,15 +51,13 @@ static string ProcessStepsInOrder(IReadOnlyCollection<Step> steps)
 
 static int ProcessStepsWithParallelWorkers(IReadOnlyCollection<Step> steps, int workers)
 {
-    var completedSteps = new List<Step>(steps.Count);
-
     int currentTime = -1;
     int availableWorkers = workers;
     var inProgressSteps = new List<Step>();
     while (steps.Any(s => !s.IsDone))
     {
         currentTime++;
-        availableWorkers += UpdateState(inProgressSteps, currentTime, completedSteps);
+        availableWorkers += CompleteStepsIfDone(inProgressSteps, currentTime);
         var stepsToStart = steps
             .Where(s => !s.IsDone && !s.IsProcessing && s.PrerequisiteSteps.Count(p => !p.IsDone) == 0)
             .OrderBy(s => s.Name)
@@ -76,14 +74,13 @@ static int ProcessStepsWithParallelWorkers(IReadOnlyCollection<Step> steps, int 
     return currentTime;
 }
 
-static int UpdateState(ICollection<Step> inProgressSteps, int currentTime, ICollection<Step> completedSteps)
+static int CompleteStepsIfDone(ICollection<Step> inProgressSteps, int currentTime)
 {
     var completed = inProgressSteps.Where(s => s.CompletionTime <= currentTime).ToList();
     foreach (var step in completed)
     {
         step.IsDone = true;
         inProgressSteps.Remove(step);
-        completedSteps.Add(step);
     }
 
     return completed.Count;

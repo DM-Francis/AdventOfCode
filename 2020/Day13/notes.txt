@@ -1,0 +1,35 @@
+We have a list of tuples (p_0, x_0) to (p_N, x_N).
+
+We want to find the first positive integer t such that the following condition is satisfied for all n:
+
+(t + p_n) mod x_n = 0
+
+this can be re-arranged as
+
+(t + p_n) = k_n * x_n
+
+for some positive integer k_n
+
+Summing for all n:
+
+Nt + (SUM p0 to pN) = (SUM 0 to N: k_n * x_n)
+
+t = ((SUM 0 to N: k_n * x_n) - (SUM p0 to pN)) / N
+
+We want to find the smallest possible t.
+We know that ((SUM 0 to N: k_n * x_n) - (SUM 0 to N: k_n * x_n)) must be a multiple of N.
+
+Let s := (SUM p0 to pN),
+then
+
+(SUM 0 to N: k_n * x_n) = Nt + s
+
+We can iterate through possible values for all k_n until we find a valid combination.
+We need to ensure we iterate through them in ascending order, so assume without loss of generality that the x_n are in ascending order.
+
+Then iterate k_0 from 0 to x_1, and then increment x_1 and reset x_0.
+Continue until x_1 reaches x_2, then start incrementing x_2 and reset x_1, and so on.
+
+----------------------------------------------------
+
+NOTE: I didn't need to use any of this in the solution!

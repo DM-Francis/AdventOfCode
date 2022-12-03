@@ -50,13 +50,12 @@ static bool DifferByOneCharacter(string first, string second, out int differentI
     differentIndex = 0;
     for (int i = 0; i < first.Length; i++)
     {
-        if (first[i] != second[i])
-        {
-            differenceCount++;
-            differentIndex = i;
-            if (differenceCount >= 2)
-                return false;
-        }
+        if (first[i] == second[i])
+            continue;
+        
+        if (++differenceCount >= 2)
+            return false;
+        differentIndex = i;
     }
 
     return differenceCount == 1;

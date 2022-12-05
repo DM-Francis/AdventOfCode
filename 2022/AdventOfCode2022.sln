@@ -1,12 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Day01", "Day01\Day01.csproj", "{6AE98128-6A94-4999-BB6B-FD6C2588CDC5}"
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33110.190
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Day01", "Day01\Day01.csproj", "{6AE98128-6A94-4999-BB6B-FD6C2588CDC5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Day02", "Day02\Day02.csproj", "{11698E62-BD2B-4EC5-83C1-FBA7738A68A6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Day02", "Day02\Day02.csproj", "{11698E62-BD2B-4EC5-83C1-FBA7738A68A6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Day03", "Day03\Day03.csproj", "{4BBE8CCD-721E-48C3-9759-B11AF7C87B5D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Day03", "Day03\Day03.csproj", "{4BBE8CCD-721E-48C3-9759-B11AF7C87B5D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Day04", "Day04\Day04.csproj", "{21BC15F4-32C6-4982-99AF-B8E37B893725}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Day04", "Day04\Day04.csproj", "{21BC15F4-32C6-4982-99AF-B8E37B893725}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Day05", "Day05\Day05.csproj", "{8A5C4458-6A8B-427F-9E53-96A84A8E5190}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,5 +35,15 @@ Global
 		{21BC15F4-32C6-4982-99AF-B8E37B893725}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{21BC15F4-32C6-4982-99AF-B8E37B893725}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{21BC15F4-32C6-4982-99AF-B8E37B893725}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A5C4458-6A8B-427F-9E53-96A84A8E5190}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A5C4458-6A8B-427F-9E53-96A84A8E5190}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A5C4458-6A8B-427F-9E53-96A84A8E5190}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A5C4458-6A8B-427F-9E53-96A84A8E5190}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B5A71BD9-62C9-4496-92BE-7007AA200C48}
 	EndGlobalSection
 EndGlobal

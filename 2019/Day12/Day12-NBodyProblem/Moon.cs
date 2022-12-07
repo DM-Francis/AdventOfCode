@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
-using System.Text;
 
 namespace Day12_NBodyProblem
 {
-    public class Moon : IEquatable<Moon>
+    public struct Moon : IEquatable<Moon>
     {
-        public Vector3 Position { get; set; }
-        public Vector3 Velocity { get; set; }
+        public Vector3 Position;
+        public Vector3 Velocity;
 
         public float PotentialEnergy => SumAbsValues(Position);
         public float KineticEnergy => SumAbsValues(Velocity);
@@ -27,32 +24,22 @@ namespace Day12_NBodyProblem
             Velocity = velocity;
         }
 
-        public Moon GetCopy()
+        public void AddVelocityAndApplyToPosition(Vector3 velocityChange)
         {
-            return new Moon(Position, Velocity);
+            var newVelocity = Velocity + velocityChange;
+            Position += newVelocity;
+            Velocity = newVelocity;
         }
 
-        private float SumAbsValues(Vector3 vector)
+        private static float SumAbsValues(Vector3 vector)
         {
             var absVector = Vector3.Abs(vector);
-            return absVector.X + absVector.Y + absVector.Z;
+            return Vector3.Dot(absVector, Vector3.One);
         }
 
-        public override bool Equals(object obj)
+        public bool Equals(Moon other)
         {
-            return Equals(obj as Moon);
-        }
-
-        public bool Equals([AllowNull] Moon other)
-        {
-            return other != null &&
-                   Position.Equals(other.Position) &&
-                   Velocity.Equals(other.Velocity);
-        }
-
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(Position, Velocity);
+            return Position.Equals(other.Position) && Velocity.Equals(other.Velocity);
         }
     }
 }

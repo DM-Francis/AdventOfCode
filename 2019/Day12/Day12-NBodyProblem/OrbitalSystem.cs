@@ -1,25 +1,19 @@
-﻿using Combinatorics.Collections;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Text;
 
 namespace Day12_NBodyProblem
 {
     public class OrbitalSystem
     {
-        public Dictionary<MoonState, long> History = new Dictionary<MoonState, long>();
-        public MoonState Moons { get; }
-
         private long _timesteps = 0;
-        private readonly List<(Moon A, Moon B)> _moonPairs;
+        private OrbitalSystemState _state;
+
+        public MoonState Moons => new MoonState(new[] {_state.A, _state.B, _state.C, _state.D});
+
 
         public OrbitalSystem(List<Moon> moons)
         {
-            Moons = new MoonState(moons);
-            var combs = new Combinations<Moon>(Moons.ToList(), 2);
-            _moonPairs = combs.Select(l => (l[0], l[1])).ToList();
+            _state = new OrbitalSystemState(moons);
         }
 
         public void AdvanceTimeSteps(long timesteps)
@@ -32,56 +26,27 @@ namespace Day12_NBodyProblem
 
         public void AdvanceTimeStep()
         {
-            ApplyGravity();
-            ApplyVelocity();
+            _state.ApplyTimestep();
             _timesteps++;
         }
 
-        public void AdvanceUntilRepetition()
+        public long AdvanceUntilRepetition()
         {
-            RecordCurrentState();
-            AdvanceTimeSteps(1_000_000);
-            
-            if (History.TryGetValue(Moons, out long matchingTimeStep))
+            var initialState = _state;
+
+            var state = _state;
+            do
             {
-
+                state.ApplyTimestep();
+                _timesteps++;
+                if (_timesteps % 100_000_000 == 0)
+                    Console.WriteLine($"Timestep: {_timesteps:N0}");
             }
+            while (!state.Equals(initialState));
+
+            return _timesteps;
         }
 
-        public float GetTotalEnergy() => Moons.Select(m => m.TotalEnergy).Sum();
-
-        private void RecordCurrentState()
-        {
-            History[Moons.GetCopy()] = _timesteps;
-        }
-
-        private void ApplyGravity()
-        {
-            for (int i = 0; i < _moonPairs.Count; i++)
-            {
-                ApplyGravityToPair(_moonPairs[i].A, _moonPairs[i].B);
-            }
-        }
-
-        private void ApplyGravityToPair(Moon moonA, Moon moonB)
-        {
-            var diff = moonB.Position - moonA.Position;
-            var unitChange = diff / Vector3.Abs(diff);
-
-            if (float.IsNaN(unitChange.X)) unitChange.X = 0;
-            if (float.IsNaN(unitChange.Y)) unitChange.Y = 0;
-            if (float.IsNaN(unitChange.Z)) unitChange.Z = 0;
-
-            moonA.Velocity += unitChange;
-            moonB.Velocity -= unitChange;
-        }
-
-        private void ApplyVelocity()
-        {
-            for (int i = 0; i < Moons.Count; i++)
-            {
-                Moons[i].Position += Moons[i].Velocity;
-            }
-        }
+        public float GetTotalEnergy() => _state.TotalEnergy;
     }
 }

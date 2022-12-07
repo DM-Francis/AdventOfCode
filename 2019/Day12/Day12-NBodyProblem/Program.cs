@@ -16,11 +16,25 @@ namespace Day12_NBodyProblem
                 new Moon(new Vector3(1, -4, -11))
             };
 
+            var testMoons = new List<Moon>
+            {
+                new Moon(new Vector3(-1,0,2)),
+                new Moon(new Vector3(2,-10,-7)),
+                new Moon(new Vector3(4,-8,8)),
+                new Moon(new Vector3(3,5,-1))
+            };
+
+            // Part 1
             var system = new OrbitalSystem(moons);
+            int steps = 1000;
+            system.AdvanceTimeSteps(steps);
+            Console.WriteLine($"Total energy after {steps} steps: {system.GetTotalEnergy()}");
 
-            system.AdvanceTimeSteps(46_000_000);
+            // Part 2
+            var system2 = new OrbitalSystem(moons);
+            long stepsUntilRepetition = system2.AdvanceUntilRepetition();
 
-            Console.WriteLine(system.GetTotalEnergy());
+            Console.WriteLine($"Steps until repetition: {stepsUntilRepetition}");
         }
     }
 }

@@ -21,11 +21,6 @@ namespace Day12_NBodyProblem
             D = moons[3];
         }
 
-        public OrbitalSystemState(Moon a, Moon b, Moon c, Moon d)
-        {
-            A = a; B = b; C = c; D = d;
-        }
-
         public void ApplyTimestep()
         {
             var diffab = GetGravityDiff(A, B);

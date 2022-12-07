@@ -18,10 +18,10 @@ namespace Day12_NBodyProblem
 
             var testMoons = new List<Moon>
             {
-                new Moon(new Vector3(-1,0,2)),
-                new Moon(new Vector3(2,-10,-7)),
-                new Moon(new Vector3(4,-8,8)),
-                new Moon(new Vector3(3,5,-1))
+                new Moon(new Vector3(-8,-10,0)),
+                new Moon(new Vector3(5,5,10)),
+                new Moon(new Vector3(2,-7,3)),
+                new Moon(new Vector3(9,-8,-3))
             };
 
             // Part 1

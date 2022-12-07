@@ -40,7 +40,7 @@ namespace Day12_NBodyProblem
                 state.ApplyTimestep();
                 _timesteps++;
                 if (_timesteps % 100_000_000 == 0)
-                    Console.WriteLine($"Timestep: {_timesteps:N0}");
+                    Console.WriteLine($"Timestep: {_timesteps:N0}  Total energy: {state.TotalEnergy}");
             }
             while (!state.Equals(initialState));
 

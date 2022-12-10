@@ -1,8 +1,11 @@
-﻿using Directory = Day07.Directory;
+﻿using Day07;
+using Directory = Day07.Directory;
 using File = Day07.File;
 
 var input = System.IO.File.ReadAllLines("input.txt");
 var root = BuildDirectoryStructure(input);
+
+RenderToConsole(root, 0);
 
 var allDirectorySizes = new Dictionary<Directory, int>();
 RecursivelyGetSizeAndAddToListOfSizes(root, allDirectorySizes);
@@ -98,5 +101,26 @@ static void RecursivelyGetSizeAndAddToListOfSizes(Directory dir, IDictionary<Dir
     foreach (var childDir in dir.Children.OfType<Directory>())
     {
         RecursivelyGetSizeAndAddToListOfSizes(childDir, sizes);
+    }
+}
+
+static void RenderToConsole(ITreeObject obj, int currentIndent)
+{
+    string indent = string.Join("", Enumerable.Repeat("  ", currentIndent));
+
+    switch (obj)
+    {
+        case File file:
+            Console.WriteLine($"{indent}- {file.Name} (file, size={file.Size})");
+            break;
+        case Directory dir:
+        {
+            Console.WriteLine($"{indent}- {dir.Name} (dir)");
+            foreach (var child in dir.Children)
+            {
+                RenderToConsole(child, currentIndent + 1);
+            }
+            break;
+        }
     }
 }

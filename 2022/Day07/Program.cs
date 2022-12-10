@@ -50,7 +50,7 @@ static Directory ExecuteCdCommand(string line, Directory currentDirectory)
 {
     var directoryName = line.Split(" ")[2];
     if (directoryName == "..")
-        return currentDirectory?.Parent ?? throw new DirectoryNotFoundException();
+        return currentDirectory.Parent ?? throw new DirectoryNotFoundException();
 
     var newDir = currentDirectory.Children.OfType<Directory>().FirstOrDefault(c => c.Name == directoryName);
     if (newDir is not null)

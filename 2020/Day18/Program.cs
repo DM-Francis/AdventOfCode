@@ -62,7 +62,7 @@ namespace Day18
                 }
             }
 
-            return currentValue;
+            return 0; // TODO Rewrite all this code
         }
 
         private static int FindClosingBracketIndex(int openingBracketIndex, string[] tokens)

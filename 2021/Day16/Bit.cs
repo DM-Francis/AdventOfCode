@@ -52,6 +52,36 @@ namespace Day16
         public static Bit MinMagnitudeNumber(Bit x, Bit y) => MinMagnitude(x, y);
         public static Bit Parse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider? provider) => throw new NotImplementedException();
         public static Bit Parse(string s, NumberStyles style, IFormatProvider? provider) => throw new NotImplementedException();
+        public static bool TryConvertFromChecked<TOther>(TOther value, out Bit result) where TOther : INumberBase<TOther>
+        {
+            throw new NotImplementedException();
+        }
+
+        public static bool TryConvertFromSaturating<TOther>(TOther value, out Bit result) where TOther : INumberBase<TOther>
+        {
+            throw new NotImplementedException();
+        }
+
+        public static bool TryConvertFromTruncating<TOther>(TOther value, out Bit result) where TOther : INumberBase<TOther>
+        {
+            throw new NotImplementedException();
+        }
+
+        public static bool TryConvertToChecked<TOther>(Bit value, out TOther result) where TOther : INumberBase<TOther>
+        {
+            throw new NotImplementedException();
+        }
+
+        public static bool TryConvertToSaturating<TOther>(Bit value, out TOther result) where TOther : INumberBase<TOther>
+        {
+            throw new NotImplementedException();
+        }
+
+        public static bool TryConvertToTruncating<TOther>(Bit value, out TOther result) where TOther : INumberBase<TOther>
+        {
+            throw new NotImplementedException();
+        }
+
         public static Bit Parse(ReadOnlySpan<char> s, IFormatProvider? provider) => throw new NotImplementedException();
         public static Bit Parse(string s, IFormatProvider? provider) => throw new NotImplementedException();
         public static bool TryParse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider? provider, [MaybeNullWhen(false)] out Bit result) => throw new NotImplementedException();

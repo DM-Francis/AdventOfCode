@@ -67,5 +67,4 @@ static void RenderPoints(List<Point> points)
     }
 }
 
-
-public record struct Point(Vector2 Position, Vector2 Velocity);
+public readonly record struct Point(Vector2 Position, Vector2 Velocity);

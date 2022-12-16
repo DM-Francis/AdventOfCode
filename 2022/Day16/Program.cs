@@ -32,12 +32,20 @@ foreach (var line in input)
 
 RemoveRedundantNodes(graph, valves);
 
+// Try and consolidate graph further so that every node has an exact distance to every other node
+var consolidatedGraph = new Dictionary<string, Dictionary<string, int>>();
+foreach (var node in graph.Keys)
+{
+    var distancesToOtherNodes = FindDistancesToOtherNodes(node, graph);
+    consolidatedGraph[node] = distancesToOtherNodes;
+}
+
 
 // Part 1
 int nodeCount = 0;
 int maxTotalFlowRate = valves.Values.Sum(v => v.FlowRate);
 var visited = new HashSet<string>();
-int maximumPressureReleased = GetMaximumPressureReleasedFromNodeWithinTime("AA", visited, 0,30, 0, 0, 0, 0, graph, valves, ref nodeCount, maxTotalFlowRate);
+int maximumPressureReleased = GetMaximumPressureReleasedFromNodeWithinTime("AA", visited, 0,30, 0, 0, 0, 0, consolidatedGraph, valves, ref nodeCount, maxTotalFlowRate);
 
 Console.WriteLine($"Total nodes explored: {nodeCount:#,#}");
 Console.WriteLine($"Maximum pressure released in 30 minutes: {maximumPressureReleased}");
@@ -53,7 +61,7 @@ var elephantVisited = new HashSet<string>();
 int maximumPressureReleasedWithElephant = GetMaximumPressureReleasedFromNodeWithinTimeWithElephant(
     "AA", visited, 0,
     "AA", elephantVisited, 0,
-    26, 0, 0, 0, 0, graph, valves, ref nodeCount, maxTotalFlowRate);
+    26, 0, 0, 0, 0, consolidatedGraph, valves, ref nodeCount, maxTotalFlowRate);
 
 Console.WriteLine($"Total nodes explored: {nodeCount:#,#}");
 Console.WriteLine($"Maximum pressure released in 26 minutes with elephant: {maximumPressureReleasedWithElephant}");
@@ -180,13 +188,16 @@ static IEnumerable<Action> GetAvailableActionsAtNode(string node, Dictionary<str
     
     var valve = valves[node];
     if (valve.FlowRate > 0 && !valve.IsOpen)
+    {
         yield return new Action(ActionType.OpenValve, node, node);
+        yield break;
+    }
 
     var adjacentNodes = graph[node].ToList();
-    for (int i = 0; i < adjacentNodes.Count; i++)
+    foreach (var adjacentNode in adjacentNodes)
     {
-        var adjacentNode = adjacentNodes[i];
-        if (visitedNodes.Contains(adjacentNode.Key))
+        var adjacentValve = valves[adjacentNode.Key];
+        if (adjacentValve.IsOpen || visitedNodes.Contains(adjacentNode.Key))
             continue;
 
         yield return new Action(ActionType.Move, node, adjacentNode.Key, adjacentNode.Value);
@@ -256,7 +267,28 @@ static void AddNewConnectionToNode(string nodeName, string targetNode, int newDi
     currentConnections[targetNode] = newDistance;
 }
 
+static Dictionary<string,int> FindDistancesToOtherNodes(string node, Dictionary<string, Dictionary<string, int>> graph)
+{
+    var unvisited = graph.Keys.ToHashSet();
+    var distances = unvisited.ToDictionary(x => x, _ => int.MaxValue);
+    distances[node] = 0;
 
+    while (unvisited.Count > 0)
+    {
+        var current = unvisited.OrderBy(x => distances[x]).First();
+        foreach (var adjacentNode in graph[current])
+        {
+            int newDistance = distances[current] + adjacentNode.Value;
+            if (newDistance < distances[adjacentNode.Key])
+                distances[adjacentNode.Key] = newDistance;
+        }
+        
+        unvisited.Remove(current);
+    }
+
+    distances.Remove(node);
+    return distances;
+}
 
 namespace Day16
 {

@@ -42,13 +42,15 @@ while (queue.Count > 0)
     iterations++;
     var current = queue.First();
     queue.Remove(current);
+
+    var adjacentPoints = GetAdjacentPoints(current).ToList();
     
-    int adjacentToDropletCount = pointsInDroplet.Count(p => PointsAreAdjacent(p, current));
+    int adjacentToDropletCount = adjacentPoints.Count(p => pointsInDroplet.Contains(p));
     externalPoints[current] = adjacentToDropletCount;
     
-    foreach (var next in GetAdjacentPoints(current).Where(p => IsInBox(p, box)
-                                                               && !externalPoints.ContainsKey(p)
-                                                               && !pointsInDroplet.Contains(p)))
+    foreach (var next in adjacentPoints.Where(p => IsInBox(p, box)
+                                                   && !externalPoints.ContainsKey(p)
+                                                   && !pointsInDroplet.Contains(p)))
     {
         queue.Add(next);
     }

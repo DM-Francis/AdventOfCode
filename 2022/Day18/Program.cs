@@ -71,13 +71,6 @@ static IEnumerable<Point> GetAdjacentPoints(Point point)
     yield return point with { Z = point.Z - 1 };
 }
 
-static bool PointsAreAdjacent(Point a, Point b)
-{
-    return Math.Abs(a.X - b.X) == 1 && a.Y == b.Y && a.Z == b.Z ||
-           Math.Abs(a.Y - b.Y) == 1 && a.X == b.X && a.Z == b.Z ||
-           Math.Abs(a.Z - b.Z) == 1 && a.X == b.X && a.Y == b.Y;
-}
-
 static bool IsInBox(Point point, Box box)
 {
     return point.X >= box.MinX && point.X <= box.MaxX &&

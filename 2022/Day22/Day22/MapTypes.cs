@@ -1,6 +1,6 @@
-namespace Day22.MapTypes;
+namespace Day22;
 
-public record struct Position(int X, int Y)
+public readonly record struct Position(int X, int Y)
 {
     public Position MoveInDirection(Facing direction)
     {
@@ -15,7 +15,7 @@ public record struct Position(int X, int Y)
     }
 }
 
-public record struct Location(Position Position, Facing Facing)
+public readonly record struct Location(Position Position, Facing Facing)
 {
     public Location TurnLeft()
     {

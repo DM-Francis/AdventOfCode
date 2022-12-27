@@ -1,5 +1,4 @@
 using System.Text;
-using Day22.MapTypes;
 
 namespace Day22;
 
@@ -7,7 +6,7 @@ public static class MapFunctions
 {
     public static MapSquare[,] CreateMapFromInputString(string mapString)
     {
-        var mapLines = mapString.Split('\n');
+        var mapLines = mapString.Split(new []{'\n', '\r'}, StringSplitOptions.RemoveEmptyEntries);
         var map = new MapSquare[mapLines.Max(l => l.Length), mapLines.Length];
 
         for (int y = 0; y < map.GetLength(1); y++)
@@ -64,6 +63,13 @@ public static class MapFunctions
                 output.Add(ch);
             }
         }
+        
+        if (numberBuilder.Length > 0)
+        {
+            int number = int.Parse(numberBuilder.ToString());
+            output.Add(number);
+            numberBuilder.Clear();
+        }
 
         return output;
     }
@@ -71,7 +77,7 @@ public static class MapFunctions
     public static Location FollowCommandsOnMap(MapSquare[,] map, Location startingLocation,
         IEnumerable<object> commands)
     {
-        var path = new Dictionary<Position, Facing> { [startingLocation.Position] = startingLocation.Facing };
+        var path = new List<Location> { startingLocation };
         var currentLocation = startingLocation;
         foreach (var command in commands)
         {
@@ -80,10 +86,10 @@ public static class MapFunctions
             {
                 'L' => currentLocation.TurnLeft(),
                 'R' => currentLocation.TurnRight(),
-                int distance => MoveForward(map, currentLocation, distance),
+                int distance => MoveForward(map, currentLocation, distance, path),
                 _ => throw new ArgumentOutOfRangeException(nameof(command), command, "Unrecognised command")
             };
-            path[currentLocation.Position] = currentLocation.Facing;
+            path.Add(currentLocation);
 
             // RenderMapWithPath(map, path);
         }
@@ -92,7 +98,7 @@ public static class MapFunctions
         return currentLocation;
     }
 
-    public static Location MoveForward(MapSquare[,] map, Location location, int distance)
+    public static Location MoveForward(MapSquare[,] map, Location location, int distance, IList<Location>? path = null)
     {
         var direction = location.Facing;
         var position = location.Position;
@@ -115,6 +121,7 @@ public static class MapFunctions
                 return new Location(position, direction);
 
             position = next;
+            path?.Add(new Location(position, direction));
         }
 
         return new Location(position, direction);
@@ -149,43 +156,64 @@ public static class MapFunctions
         };
     }
 
-    public static void RenderMapWithPath(MapSquare[,] map, IReadOnlyDictionary<Position, Facing> path)
+    public static void RenderMapWithPath(MapSquare[,] map, IReadOnlyList<Location> path)
     {
         Console.Clear();
+        int origRow = Console.CursorTop;
+        int origCol = Console.CursorLeft;
         for (int y = 0; y < map.GetLength(1); y++)
         {
             for (int x = 0; x < map.GetLength(0); x++)
             {
-                Console.ResetColor();
-                var position = new Position(x, y);
-                char output;
-                if (path.TryGetValue(position, out var direction))
+                var output = map[x, y] switch
                 {
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    output = direction switch
-                    {
-                        Facing.Right => '>',
-                        Facing.Down => 'v',
-                        Facing.Left => '<',
-                        Facing.Up => '^',
-                        _ => throw new IndexOutOfRangeException()
-                    };
-                }
-                else
-                {
-                    output = map[x, y] switch
-                    {
-                        MapSquare.Empty => ' ',
-                        MapSquare.Open => '.',
-                        MapSquare.Wall => '#',
-                        _ => throw new IndexOutOfRangeException()
-                    };
-                }
+                    MapSquare.Empty => ' ',
+                    MapSquare.Open => '.',
+                    MapSquare.Wall => '#',
+                    _ => throw new IndexOutOfRangeException()
+                };
 
-                Console.Write(output);
+                RenderAt(output, x, y, ConsoleColor.White, origRow, origCol);
+            }
+        }
+
+        var previous = path[0];
+        foreach (var location in path)
+        {
+            int diff = Math.Abs(location.Position.X - previous.Position.X) +
+                       Math.Abs(location.Position.Y - previous.Position.Y);
+
+            if (diff % 50 != 49 && diff > 1)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Write('X');
+                break;
             }
 
-            Console.WriteLine();
+            previous = location;
+
+            var output = location.Facing switch
+            {
+                Facing.Right => '>',
+                Facing.Down => 'v',
+                Facing.Left => '<',
+                Facing.Up => '^',
+                _ => throw new IndexOutOfRangeException()
+            };
+            
+            RenderAt(output, location.Position.X, location.Position.Y, ConsoleColor.Green, origRow, origCol);
+            // Thread.Sleep(10);
         }
+        
+        Console.SetCursorPosition(0, origRow + map.GetLength(1));
+    }
+
+    private static void RenderAt(char c, int x, int y, ConsoleColor color, int origRow, int origCol)
+    {
+        Console.SetCursorPosition(origCol + x, origRow + y);
+        Console.ResetColor();
+        Console.ForegroundColor = color;
+        Console.Write(c);
+        Console.ResetColor();
     }
 }

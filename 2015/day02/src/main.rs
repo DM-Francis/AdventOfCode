@@ -8,7 +8,8 @@ fn main() {
     for line in lines
     {
         let dimensions = line.split("x");
-        let mut dimensions: Vec<i32> = dimensions.into_iter().map(|x| x.parse().unwrap()).collect();
+        let mut dimensions = dimensions.into_iter().map(|x| x.parse::<i32>().unwrap());
+        let mut dimensions: [i32; 3] = [dimensions.next().unwrap(), dimensions.next().unwrap(), dimensions.next().unwrap()];
         dimensions.sort();
         let x = dimensions[0];
         let y = dimensions[1];

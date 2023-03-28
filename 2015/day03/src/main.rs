@@ -1,4 +1,4 @@
-use std::{fs, collections::HashMap};
+use std::{fs, collections::HashSet};
 
 #[derive(PartialEq, Eq, Hash, Clone, Copy)]
 struct Position(i32, i32);
@@ -6,13 +6,13 @@ struct Position(i32, i32);
 fn main() {
     let input = fs::read_to_string("input.txt").expect("Could not find input.txt");
 
+    // Part 1
     let mut current = Position(0,0);
-    let mut visited = HashMap::from([(current, 1)]);
+    let mut visited = HashSet::from([current]);
 
     for command in input.chars() {
         current = move_position(current, command);
-
-        *visited.entry(current).or_default() += 1;
+        visited.insert(current);
     }
 
     println!("Visited at least once: {}", visited.len());
@@ -20,16 +20,16 @@ fn main() {
     // Part 2
     let mut current_santa = Position(0,0);
     let mut current_robo_santa = Position(0,0);
-    let mut visited_2 = HashMap::from([(current_santa, 2)]);
+    let mut visited_2 = HashSet::from([current_santa]);
 
     for (i, command) in input.char_indices() {
         if i % 2 == 0 {
             current_santa = move_position(current_santa, command);
-            *visited_2.entry(current_santa).or_default() += 1;
+            visited_2.insert(current_santa);
         }
         else {
             current_robo_santa = move_position(current_robo_santa, command);
-            *visited_2.entry(current_robo_santa).or_default() += 1;
+            visited_2.insert(current_robo_santa);
         }
     }
     

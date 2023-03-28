@@ -10,7 +10,7 @@ fn main() {
         let dimensions = line.split("x");
         let mut dimensions = dimensions.into_iter().map(|x| x.parse::<i32>().unwrap());
         let mut dimensions: [i32; 3] = [dimensions.next().unwrap(), dimensions.next().unwrap(), dimensions.next().unwrap()];
-        dimensions.sort();
+        dimensions.sort_unstable();
         let x = dimensions[0];
         let y = dimensions[1];
         let z = dimensions[2];

@@ -81,7 +81,6 @@ public static class MapFunctions
         var currentLocation = startingLocation;
         foreach (var command in commands)
         {
-            // Console.WriteLine(command);
             currentLocation = command switch
             {
                 'L' => currentLocation.TurnLeft(),
@@ -90,41 +89,44 @@ public static class MapFunctions
                 _ => throw new ArgumentOutOfRangeException(nameof(command), command, "Unrecognised command")
             };
             path.Add(currentLocation);
-
-            // RenderMapWithPath(map, path);
         }
 
         RenderMapWithPath(map, path);
         return currentLocation;
     }
 
-    public static Location MoveForward(MapSquare[,] map, Location location, int distance, IList<Location>? path = null)
+    public static Location MoveForward(MapSquare[,] map, Location start, int distance, IList<Location>? path = null, bool useCubeEdges = false)
     {
-        var direction = location.Facing;
-        var position = location.Position;
+        var current = start;
         for (int i = 0; i < distance; i++)
         {
-            var next = position.MoveInDirection(direction);
+            var newPosition = current.Position.MoveInDirection(current.Facing);
+            var newLocation = AccountForEdgeCollisions(map, newPosition, current.Position, current.Facing);
 
-            if (next.X < 0)
-                next = FindEdgeInDirection(map, position, Facing.Right);
-            else if (next.Y < 0)
-                next = FindEdgeInDirection(map, position, Facing.Down);
-            else if (next.X > map.GetUpperBound(0))
-                next = FindEdgeInDirection(map, position, Facing.Left);
-            else if (next.Y > map.GetUpperBound(1))
-                next = FindEdgeInDirection(map, position, Facing.Up);
-            else if (map[next.X, next.Y] == MapSquare.Empty)
-                next = FindEdgeInDirection(map, position, GetOppositeFacing(direction));
+            if (map[newLocation.Position.X, newLocation.Position.Y] == MapSquare.Wall)
+                return current;
 
-            if (map[next.X, next.Y] == MapSquare.Wall)
-                return new Location(position, direction);
-
-            position = next;
-            path?.Add(new Location(position, direction));
+            current = newLocation;
+            path?.Add(current);
         }
 
-        return new Location(position, direction);
+        return current;
+    }
+
+    private static Location AccountForEdgeCollisions(MapSquare[,] map, Position finish, Position start, Facing direction)
+    {
+        if (finish.X < 0)
+            return new Location(FindEdgeInDirection(map, start, Facing.Right), direction);
+        if (finish.Y < 0)
+            return new Location(FindEdgeInDirection(map, start, Facing.Down), direction);
+        if (finish.X > map.GetUpperBound(0))
+            return new Location(FindEdgeInDirection(map, start, Facing.Left), direction);
+        if (finish.Y > map.GetUpperBound(1))
+            return new Location(FindEdgeInDirection(map, start, Facing.Up), direction);
+        if (map[finish.X, finish.Y] == MapSquare.Empty)
+            return new Location(FindEdgeInDirection(map, start, GetOppositeFacing(direction)), direction);
+        
+        return new Location(finish, direction);
     }
 
     public static Position FindEdgeInDirection(MapSquare[,] map, Position position, Facing direction)
@@ -154,6 +156,11 @@ public static class MapFunctions
             Facing.Down => Facing.Up,
             _ => throw new ArgumentOutOfRangeException(nameof(facing))
         };
+    }
+
+    public static Location AccountForEdgeCollisionsInCube(MapSquare[,] map, Position finish, Position start, Facing direction)
+    {
+        return new Location(start, direction);
     }
 
     public static void RenderMapWithPath(MapSquare[,] map, IReadOnlyList<Location> path)

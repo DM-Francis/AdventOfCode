@@ -19,4 +19,3 @@ var finalPassword = (lastLocation.Position.Y + 1) * 1000 + (lastLocation.Positio
 Console.WriteLine($"Overall to right: {overallToRight}");
 Console.WriteLine($"Last location: {lastLocation}");
 Console.WriteLine($"Final password: {finalPassword}");
-// Gets the wrong answer for the actual input - must be a subtle bug somewhere

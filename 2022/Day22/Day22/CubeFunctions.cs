@@ -6,11 +6,12 @@ public static class CubeFunctions
     {
         var edges = GetEdgesFromMap(map);
         var edgeMap = new Dictionary<Location, Location>();
+        var connected = new HashSet<Edge>();
 
         int rotations = 1;
-        while (edges.Count > 0)
+        while (connected.Count < edges.Count)
         {
-            ConnectThenRemoveValidAdjacentEdgesSinglePass(edges, rotations++, edgeMap);
+            ConnectValidAdjacentEdgesSinglePass(edges, connected, rotations++, edgeMap);
         }
         
         return edgeMap;
@@ -132,19 +133,23 @@ public static class CubeFunctions
         throw new Exception("Next edge not found");
     }
 
-    private static void ConnectThenRemoveValidAdjacentEdgesSinglePass(List<Edge> edges, int numRotations, Dictionary<Location, Location> edgeMap)
+    private static void ConnectValidAdjacentEdgesSinglePass(List<Edge> edges, HashSet<Edge> connected, int numRotations, Dictionary<Location, Location> edgeMap)
     {
         for (int i = 0; i < edges.Count; i++)
         {
             var current = edges[i];
-            var next = edges[(i + 1) % edges.Count];
+            var gap = 2 * numRotations - 1; // 1,3,5,7,...
+            var next = edges[(i + gap) % edges.Count];
+            
+            if (connected.Contains(current) || connected.Contains(next))
+                continue;
 
             if (current.Normal.RotateClockwise(numRotations) == next.Normal.Opposite())
             {
                 ConnectEdges(current, next, edgeMap);
                 ConnectEdges(next, current, edgeMap);
-                edges.Remove(current);
-                edges.Remove(next);
+                connected.Add(current);
+                connected.Add(next);
             }
         }
     }
@@ -160,7 +165,7 @@ public static class CubeFunctions
             var end = endEdgePositions[i];
             var startLocation = new Location(start, current.Normal);
             var endLocation = new Location(end, next.Normal.Opposite());
-            edgeMap.Add(startLocation, endLocation);
+            edgeMap[startLocation] = endLocation;
         }
     }
 }

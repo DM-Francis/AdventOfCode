@@ -87,6 +87,44 @@ public class CubeFunctionTests
     }
 
     [Fact]
+    public void GivenLength2EdgesFromMapThenReturnsCorrectResult()
+    {
+        var mapString = """
+                          ....
+                          ....
+                          ..
+                          ..
+                        ....
+                        ....
+                        ..
+                        ..
+                        """;
+        
+        var map = MapFunctions.CreateMapFromInputString(mapString);
+        var edges = CubeFunctions.GetEdgesFromMap(map);
+
+        var expected = new List<Edge>
+        {
+            new(new Position(2, 0), new Position(3, 0), Facing.Up),
+            new(new Position(4, 0), new Position(5, 0), Facing.Up),
+            new(new Position(5, 0), new Position(5, 1), Facing.Right),
+            new(new Position(5, 1), new Position(4, 1), Facing.Down),
+            new(new Position(3, 2), new Position(3, 3), Facing.Right),
+            new(new Position(3, 4), new Position(3, 5), Facing.Right),
+            new(new Position(3, 5), new Position(2, 5), Facing.Down),
+            new(new Position(1, 6), new Position(1, 7), Facing.Right),
+            new(new Position(1, 7), new Position(0, 7), Facing.Down),
+            new(new Position(0, 7), new Position(0, 6), Facing.Left),
+            new(new Position(0, 5), new Position(0, 4), Facing.Left),
+            new(new Position(0, 4), new Position(1, 4), Facing.Up),
+            new(new Position(2, 3), new Position(2, 2), Facing.Left),
+            new(new Position(2, 1), new Position(2, 0), Facing.Left),
+        };
+
+        edges.Should().BeEquivalentTo(expected);
+    }
+
+    [Fact]
     public void GivenEdgesOfLength2ThenGetEdgeMapReturnsCorrectResult()
     {
         var mapString = """
@@ -148,4 +186,66 @@ public class CubeFunctionTests
         edgeMap.Should().BeEquivalentTo(expected);
     }
     
+    [Fact]
+    public void GivenEdgesOfLength2ThenGetEdgeMapReturnsCorrectResult2()
+    {
+        var mapString = """
+                          ....
+                          ....
+                          ..
+                          ..
+                        ....
+                        ....
+                        ..
+                        ..
+                        """;
+
+        var map = MapFunctions.CreateMapFromInputString(mapString);
+        var edgeMap = CubeFunctions.GetEdgeMap(map);
+
+        Location L(int x, int y, Facing facing) => Location.Create(x, y, facing);
+        var expected = new Dictionary<Location, Location>
+        {
+            // Edges distance 1
+            [L(4,1, Facing.Down)] = L(3,2, Facing.Left),
+            [L(5,1, Facing.Down)] = L(3,3, Facing.Left),
+            [L(3,2, Facing.Right)] = L(4,1, Facing.Up),
+            [L(3,3, Facing.Right)] = L(5,1, Facing.Up),
+            
+            [L(2,5, Facing.Down)] = L(1, 6, Facing.Left),
+            [L(3, 5, Facing.Down)] = L(1, 7, Facing.Left),
+            [L(1, 6, Facing.Right)] = L(2,5, Facing.Up),
+            [L(1, 7, Facing.Right)] = L(3, 5, Facing.Up),
+            
+            [L(0, 4, Facing.Up)] = L(2,2, Facing.Right),
+            [L(1, 4, Facing.Up)] = L(2, 3, Facing.Right),
+            [L(2,2, Facing.Left)] = L(0,4, Facing.Down),
+            [L(2, 3, Facing.Left)] = L(1, 4, Facing.Down),
+            
+            // Edges distance 2
+            [L(5,0, Facing.Right)] = L(3, 5, Facing.Left),
+            [L(5, 1, Facing.Right)] = L(3, 4, Facing.Left),
+            [L(3,5, Facing.Right)] = L(5,0, Facing.Left),
+            [L(3,4, Facing.Right)] = L(5, 1, Facing.Left),
+            
+            [L(0, 4, Facing.Left)] = L(2, 1, Facing.Right),
+            [L(0, 5, Facing.Left)] = L(2, 0, Facing.Right),
+            [L(2, 1, Facing.Left)] = L(0,4, Facing.Right),
+            [L(2, 0, Facing.Left)] = L(0, 5, Facing.Right),
+            
+            // Edges distance 3
+            [L(0,6, Facing.Left)] = L(2, 0, Facing.Down),
+            [L(0, 7, Facing.Left)] = L(3, 0, Facing.Down),
+            [L(2, 0, Facing.Up)] = L(0,6, Facing.Right),
+            [L(3, 0, Facing.Up)] = L(0, 7, Facing.Right),
+            
+            // Edges distance 4
+            [L(4, 0, Facing.Up)] = L(0, 7, Facing.Up),
+            [L(5, 0, Facing.Up)] = L(1, 7, Facing.Up),
+            [L(0, 7, Facing.Down)] = L(4, 0, Facing.Down),
+            [L(1, 7, Facing.Down)] = L(5, 0, Facing.Down),
+        };
+        
+        edgeMap.Should().BeEquivalentTo(expected);
+    }
 }

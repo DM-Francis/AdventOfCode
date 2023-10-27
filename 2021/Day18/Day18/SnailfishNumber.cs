@@ -2,18 +2,37 @@ namespace Day18;
 
 public class SnailfishNumber
 {
+    public int GetMagnitude() => Root?.GetMagnitude() ?? throw new InvalidOperationException("Root cannot be null");
+    
     public Pair? Root { get; init; }
 
     public void Reduce()
     {
         if (Root is null) throw new InvalidOperationException("Root cannot be null to reduce");
 
-        var toExplode = Root.GetAllSubPairs().FirstOrDefault(p => p.Depth >= 4);
-        while (toExplode is not null)
+        var targets = GetNextReductionTargets();
+        do
         {
-            toExplode.Explode();
-            toExplode = Root.GetAllSubPairs().FirstOrDefault(p => p.Depth >= 4);
-        }
+            if (targets.ToExplode is not null)
+            {
+                targets.ToExplode.Explode();
+                targets = GetNextReductionTargets();
+                continue;
+            }
+
+            if (targets.ToSplit is not null)
+            {
+                targets.ToSplit.Split();
+                targets = GetNextReductionTargets();
+            }
+        } while (targets.ToExplode is not null || targets.ToSplit is not null);
+    }
+
+    private (Pair? ToExplode, Number? ToSplit) GetNextReductionTargets()
+    {
+        var toExplode = Root?.GetAllSubPairs().FirstOrDefault(p => p.Depth >= 4);
+        var toSplit = Root?.GetAllNumbers().FirstOrDefault(n => n.Value >= 10);
+        return (toExplode, toSplit);
     }
     
     public static SnailfishNumber operator +(SnailfishNumber a, SnailfishNumber b)
@@ -24,6 +43,7 @@ public class SnailfishNumber
         };
         
         sum.Root.UpdateParentProperties();
+        sum.Reduce();
 
         return sum;
     }
@@ -70,6 +90,10 @@ public class SnailfishNumber
 
 public class Pair : Node
 {
+    public override int GetMagnitude() => Left?.GetMagnitude() * 3 + Right?.GetMagnitude() * 2 ??
+                                          throw new InvalidOperationException(
+                                              "Left and Right can't be null to get magnitude");
+
     public Node? Left { get; set; }
     public Node? Right { get; set; }
 
@@ -118,8 +142,25 @@ public class Pair : Node
             if (node is not Pair pair)
                 continue;
             yield return pair;
-            foreach (var subpair in pair.GetAllSubPairs())
-                yield return subpair;
+            foreach (var subPair in pair.GetAllSubPairs())
+                yield return subPair;
+        }
+    }
+
+    public IEnumerable<Number> GetAllNumbers()
+    {
+        foreach (var node in new[] { Left, Right })
+        {
+            switch (node)
+            {
+                case Number number:
+                    yield return number;
+                    break;
+                case Pair pair:
+                    foreach (var subNumber in pair.GetAllNumbers())
+                        yield return subNumber;
+                    break;
+            }
         }
     }
 
@@ -143,7 +184,7 @@ public class Pair : Node
         if (right is not null)
             right.Value += rNum.Value;
 
-        var zero = new Number { Value = 0 };
+        var zero = new Number { Value = 0, Parent = Parent };
         if (Parent.Left == this)
             Parent.Left = zero;
         if (Parent.Right == this)
@@ -179,15 +220,39 @@ public class Pair : Node
 
 public class Number : Node
 {
+    public override int GetMagnitude() => Value;
+
     public int Value { get; set; }
 
     public override string ToString()
     {
         return Value.ToString();
     }
+
+    public void Split()
+    {
+        if (Parent is null) throw new InvalidOperationException("Number must have a parent to be split");
+        
+        var left = (int)Math.Floor((double)Value / 2);
+        var right = (int)Math.Ceiling((double)Value / 2);
+        var newPair = new Pair
+        {
+            Left = new Number { Value = left },
+            Right = new Number { Value = right },
+            Parent = Parent
+        };
+
+        newPair.Left.Parent = newPair;
+        newPair.Right.Parent = newPair;
+
+        if (Parent.Left == this)
+            Parent.Left = newPair;
+        if (Parent.Right == this)
+            Parent.Right = newPair;
+    }
 }
 
-public class Node
+public abstract class Node
 {
     public Pair? Parent { get; set; }
 
@@ -206,6 +271,8 @@ public class Node
             return depth;
         }
     }
+
+    public abstract int GetMagnitude();
 }
 
 public enum Side

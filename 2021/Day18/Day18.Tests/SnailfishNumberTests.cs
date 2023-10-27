@@ -115,4 +115,13 @@ public class SnailfishNumberTests
         number.Reduce();
         number.ToString().Should().Be(expected);
     }
+
+    [Theory]
+    [InlineData("[[[[[4,3],4],4],[7,[[8,4],9]]],[1,1]]", "[[[[0,7],4],[[7,8],[6,0]]],[8,1]]")]
+    public void CanDoComplexReductions(string input, string expected)
+    {
+        var number = SnailfishNumber.Parse(input);
+        number.Reduce();
+        number.ToString().Should().Be(expected);
+    }
 }

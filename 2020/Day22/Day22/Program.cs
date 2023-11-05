@@ -1,4 +1,6 @@
-﻿var input = File.ReadAllText("input");
+﻿using Day22;
+
+var input = File.ReadAllText("input");
 var exampleInput = """
                    Player 1:
                    9
@@ -28,6 +30,16 @@ var winningDeck = player1Deck.Count > 0 ? player1Deck : player2Deck;
 var winningScore = CalculateScore(winningDeck);
 
 Console.WriteLine($"Winning score: {winningScore}");
+
+// Part 2
+player1Deck = ParsePlayersDeck(parts[0]);
+player2Deck = ParsePlayersDeck(parts[1]);
+
+var result = PlayRecursiveGame(player1Deck, player2Deck);
+
+winningScore = CalculateScore(result.WinningDeck);
+
+Console.WriteLine($"Winning score for recursive game: {winningScore}");
 
 
 return;
@@ -63,6 +75,75 @@ static void PlayRound(Queue<int> player1deck, Queue<int> player2deck)
     }
 }
 
+static (Player Winner, Queue<int> WinningDeck) PlayRecursiveGame(Queue<int> player1Deck, Queue<int> player2Deck)
+{
+    Player? immediateGameWinner = null;
+    var previousStates = new HashSet<DeckState> { new(player1Deck, player2Deck)};
+    while (player1Deck.Count > 0 && player2Deck.Count > 0 && immediateGameWinner is null)
+    {
+        PlayRecursiveRound(player1Deck, player2Deck);
+        var newState = new DeckState(player1Deck, player2Deck);
+        if (previousStates.Contains(newState))
+        {
+            immediateGameWinner = Player.One;
+            break;
+        }
+            
+        previousStates.Add(newState);
+    }
+
+    Player winningPlayer;
+    if (immediateGameWinner is not null)
+        winningPlayer = immediateGameWinner.Value;
+    else
+        winningPlayer = player1Deck.Count > 0 ? Player.One : Player.Two;
+    
+    var winningDeck = winningPlayer == Player.One ? player1Deck : player2Deck;
+
+    return (winningPlayer, winningDeck);
+}
+
+static void PlayRecursiveRound(Queue<int> player1Deck, Queue<int> player2Deck)
+{
+    int played1 = player1Deck.Dequeue();
+    int played2 = player2Deck.Dequeue();
+
+    bool player1HasEnoughCardsInDeck = player1Deck.Count >= played1;
+    bool player2HasEnoughCardsInDeck = player2Deck.Count >= played2;
+
+    Player winner;
+    if (player1HasEnoughCardsInDeck && player2HasEnoughCardsInDeck)
+    {
+        var newPlayer1Deck = new Queue<int>(player1Deck.Take(played1));
+        var newPlayer2Deck = new Queue<int>(player2Deck.Take(played2));
+        var result = PlayRecursiveGame(newPlayer1Deck, newPlayer2Deck);
+        winner = result.Winner;
+    }
+    else if (played1 > played2)
+    {
+        winner = Player.One;
+    }
+    else if (played2 > played1)
+    {
+        winner = Player.Two;
+    }
+    else
+    {
+        throw new InvalidOperationException("Both played cards were the same value, this should not be possible");
+    }
+
+    if (winner == Player.One)
+    {
+        player1Deck.Enqueue(played1);
+        player1Deck.Enqueue(played2);
+    }
+    else
+    {
+        player2Deck.Enqueue(played2);
+        player2Deck.Enqueue(played1);
+    }
+}
+
 static int CalculateScore(Queue<int> deck)
 {
     int score = 0;
@@ -74,3 +155,5 @@ static int CalculateScore(Queue<int> deck)
 
     return score;
 }
+
+public enum Player { One, Two }

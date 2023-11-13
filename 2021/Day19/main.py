@@ -1,6 +1,5 @@
 from typing import List
 import numpy as np
-import matplotlib as mpl
 from matplotlib import pyplot as plt
 from scipy.spatial.transform import Rotation
 
@@ -54,7 +53,7 @@ def match_scanners(a: Scanner, b: Scanner) -> bool:
             b.finalized = True
             return True
 
-    print(f'Highest number of matches: {max_matches}')
+    # print(f'Highest number of matches: {max_matches}')
     return False
 
 
@@ -79,7 +78,7 @@ def plot_scanners(scanners: List[Scanner]):
 
 
 def main():
-    with open('example-input') as f:
+    with open('input') as f:
         raw_input = f.read()
 
     print(len(all_rotations))
@@ -90,33 +89,43 @@ def main():
     first.finalized = True  # Set scanner 0 as the canonical coordinates
     combined_scanner = Scanner(-1, first.beacons.copy())
 
-    queue = [s for s in scanners if (not s.finalized)]
-    previous = None
+    queue = [s for s in scanners if s.finalized]
 
     while len(queue) > 0:
         current = queue.pop(0)
-        if current == previous:
-            print(f"Couldn't match scanner {current.id}")
-            break
+        print(f'On scanner {current.id} with offset {current.offset} and rotation {current.rotation.as_rotvec(True)}')
 
-        # Compare current to the 'combined scanner' and check for overlaps
-        print(f'Scanner id: {current.id}. Beacons: {current.beacons.shape[0]}')
-        matched = match_scanners(combined_scanner, current)
-        if matched:
-            print(f'Matched {current.id} with offset {current.offset} and rotation {current.rotation.as_rotvec(degrees=True)}')
-            transformed_beacons = current.get_final_beacons()
+        # Compare current to all non-finalized scanners
+        for scanner in scanners:
+            if scanner.finalized:
+                continue
+
+            matched = match_scanners(current, scanner)
+            if not matched:
+                continue
+
+            print(f'Matched {current.id} with {scanner.id}')
+            transformed_beacons = scanner.get_final_beacons()
             new_beacon_set = np.concatenate((combined_scanner.beacons, transformed_beacons))
             combined_scanner.beacons = np.unique(new_beacon_set, axis=0)
-        else:
-            previous = current
-            queue.append(current)
+            queue.append(scanner)
 
     total_beacon_count = combined_scanner.beacons.shape[0]
-    uniques = np.unique(combined_scanner.beacons, axis=0)
 
-    print(f'Final beacons: {combined_scanner.beacons}')
+    plot_scanners(scanners)
     print(f'Total number of beacons: {total_beacon_count}')
-    # plot_scanners([s for s in scanners if s.finalized])
+
+    # Part 2
+    max_distance = 0
+    for scanner_a in scanners:
+        for scanner_b in scanners:
+            if scanner_a == scanner_b:
+                continue
+            
+            manhattan_distance = abs(scanner_a.offset[0] - scanner_b.offset[0]) + abs(scanner_a.offset[1] - scanner_b.offset[1]) + abs(scanner_a.offset[2] - scanner_b.offset[2])
+            max_distance = max(max_distance, int(manhattan_distance))
+
+    print(f'Max distance between scanners: {max_distance}')
 
 
 all_rotations = Rotation.create_group('O')

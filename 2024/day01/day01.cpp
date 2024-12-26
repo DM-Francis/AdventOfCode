@@ -12,7 +12,6 @@ vector<string> split(string input, string delimiter) {
     int start = 0;
     int del_pos = -1;
     while ((del_pos = input.find(delimiter, del_pos + 1)) >= 0) {
-	/*cout << del_pos << endl;*/
 	auto value = input.substr(start, del_pos);
 	output.push_back(value);
 	start = del_pos + delimiter.length();
